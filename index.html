@@ -6,37 +6,39 @@
     <title>ReJo Radio - Live Player</title>
     <style>
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #111111;
             font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 20px;
             margin: 0;
         }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 2px;
+        .logo-container {
             margin-bottom: 20px;
-            color: #ff5f00; /* ReJo Radio accentkleur (pas eventueel aan) */
+        }
+        .logo-img {
+            max-width: 180px;
+            height: auto;
         }
         .now-playing {
-            background: #111;
-            border: 1px solid #333;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 25px;
         }
         .now-playing h2 {
             font-size: 14px;
-            color: #888;
+            color: #ff6600;
             margin: 0 0 5px 0;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         #track-title {
             font-size: 18px;
             font-weight: bold;
             margin: 0;
+            color: #111111;
         }
         .audio-player {
             margin-bottom: 30px;
@@ -46,66 +48,82 @@
             max-width: 300px;
         }
         .other-players {
-            border-top: 1px solid #222;
+            border-top: 1px solid #eeeeee;
             padding-top: 20px;
         }
         .other-players p {
             font-size: 12px;
-            color: #666;
+            color: #777777;
             margin-bottom: 10px;
         }
         .player-links a {
             display: inline-block;
-            color: #aaa;
+            color: #ff6600;
             text-decoration: none;
             font-size: 13px;
             margin: 0 8px;
+            font-weight: bold;
             transition: color 0.2s;
         }
         .player-links a:hover {
-            color: #fff;
+            color: #111111;
         }
     </style>
 </head>
 <body>
 
-    <div class="logo">REJO RADIO</div>
+    <!-- Logo van ReJo Radio -->
+    <div class="logo-container">
+        <img src="ReJo.png" alt="ReJo Radio Logo" class="logo-img">
+    </div>
 
+    <!-- Nu Draait Sectie -->
     <div class="now-playing">
         <h2>Nu op ReJo Radio:</h2>
         <div id="track-title">Laden van track informatie...</div>
     </div>
 
+    <!-- De Audio Player (Autoplay) -->
     <div class="audio-player">
         <audio autoplay controls id="radio-stream">
-            <source src="https://stream.rejoradio.nl/listen/rejo_radio/radio.mp3" type="audio/mpeg">
+            <!-- Jouw AzuraCast stream (radio-id 1) -->
+            <source src="https://stream.rejoradio.nl/radio/8000/radio.mp3" type="audio/mpeg">
             Je browser ondersteunt deze speler niet.
         </audio>
     </div>
 
+    <!-- Externe Player Links -->
     <div class="other-players">
         <p>Luister via je eigen mediaspeler:</p>
         <div class="player-links">
-            <a href="https://jouwstreamurl.nl/listen.pls" target="_blank">Winamp</a> | 
-            <a href="https://jouwstreamurl.nl/listen.m3u" target="_blank">VLC Player</a> | 
-            <a href="https://jouwstreamurl.nl/listen.m3u" target="_blank">Windows Media</a> | 
-            <a href="https://jouwstreamurl.nl/listen.ram" target="_blank">RealPlayer</a>
+            <!-- Directe links gegenereerd vanuit jouw AzuraCast -->
+            <a href="https://stream.rejoradio.nl/public/rejoradio/listen.pls" target="_blank">Winamp</a> | 
+            <a href="https://stream.rejoradio.nl/public/rejoradio/listen.m3u" target="_blank">VLC Player</a> | 
+            <a href="https://stream.rejoradio.nl/public/rejoradio/listen.m3u" target="_blank">Windows Media</a> | 
+            <a href="https://stream.rejoradio.nl/public/rejoradio/listen.pls" target="_blank">RealPlayer</a>
         </div>
     </div>
 
     <script>
-        // BONUS: Hier komt straks het script om de 'Now Playing' metadata op te halen van je stream-server (Shoutcast/Icecast)
-        // Voor nu een simpele placeholder demo:
+        // De AzuraCast API-koppeling voor ReJo Radio
         function updateNowPlaying() {
-            // Dit is een voorbeeld. Afhankelijk van je provider (bijv. AzuraCast, Shoutcast) 
-            // moet je hier een API-aanroep (fetch) doen naar je server.
-            document.getElementById('track-title').innerText = "De Sjonnies - Dans Je De Hele Nacht Met Mij";
+            fetch('https://stream.rejoradio.nl/api/nowplaying/1') 
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.now_playing && data.now_playing.song) {
+                        const song = data.now_playing.song;
+                        document.getElementById('track-title').innerText = song.artist + " - " + song.title;
+                    }
+                })
+                .catch(error => {
+                    console.error('Fout bij ophalen metadata:', error);
+                    document.getElementById('track-title').innerText = "De gezelligste piratenhits & 90s dance!";
+                });
         }
         
-        // Start de check
+        // Direct starten en elke 15 seconden verversen
         updateNowPlaying();
-        // Ververs elke 10 seconden
-        setInterval(updateNowPlaying, 10000);
+        setInterval(updateNowPlaying, 15000);
     </script>
 
 </body>
