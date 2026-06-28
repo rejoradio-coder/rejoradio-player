@@ -68,39 +68,59 @@
         .player-links a:hover {
             color: #111111;
         }
+        /* Nieuwe styling voor het AAC+ Logo / Badge */
+        .aac-container {
+            margin-top: 15px;
+        }
+        .aac-badge {
+            display: inline-block;
+            background-color: #ff6600;
+            color: white !important;
+            font-size: 11px !important;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s !important;
+        }
+        .aac-badge:hover {
+            background-color: #111111 !important;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Logo van ReJo Radio -->
     <div class="logo-container">
         <img src="ReJo.png" alt="ReJo Radio Logo" class="logo-img">
     </div>
 
-    <!-- Nu Draait Sectie -->
     <div class="now-playing">
         <h2>Nu op ReJo Radio:</h2>
         <div id="track-title">Laden van track informatie...</div>
     </div>
 
-    <!-- De Audio Player (Autoplay) -->
     <div class="audio-player">
         <audio autoplay controls id="radio-stream">
-            <!-- Jouw AzuraCast stream (radio-id 1) -->
             <source src="https://stream.rejoradio.nl/radio/8000/radio.mp3" type="audio/mpeg">
             Je browser ondersteunt deze speler niet.
         </audio>
     </div>
 
-    <!-- Externe Player Links -->
     <div class="other-players">
         <p>Luister via je eigen mediaspeler:</p>
         <div class="player-links">
-            <!-- Directe links gegenereerd vanuit jouw AzuraCast -->
             <a href="https://stream.rejoradio.nl/public/rejoradio/listen.pls" target="_blank">Winamp</a> | 
             <a href="https://stream.rejoradio.nl/public/rejoradio/listen.m3u" target="_blank">VLC Player</a> | 
             <a href="https://stream.rejoradio.nl/public/rejoradio/listen.m3u" target="_blank">Windows Media</a> | 
             <a href="https://stream.rejoradio.nl/public/rejoradio/listen.pls" target="_blank">RealPlayer</a>
+        </div>
+        
+        <div class="aac-container">
+            <p>Mobiele luisteraar? Gebruik onze data-besparende stream:</p>
+            <div class="player-links">
+                <a href="https://stream.rejoradio.nl/radio/8000/radio.aac" target="_blank" class="aac-badge">📱 HQ AAC+ Stream</a>
+            </div>
         </div>
     </div>
 
